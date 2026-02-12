@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -390,11 +390,37 @@ do
       comments = { italic = false }, -- Disable italics in comments
     },
   }
+  
+  vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
+  require('gruvbox').setup {
+    invert_selection = true,
+    contrast = 'hard',
+  }
+
+  vim.pack.add { gh 'scottmckendry/cyberdream.nvim' }
+  require('cyberdream').setup {
+    -- Override colors
+    colors = {
+      bg = '#361c32',
+      bg_highlight = '#723b69',
+    },
+    -- Disable transparent background
+    transparent = false,
+    -- Enable italics comments
+    italic_comments = true,
+    -- Apply a modern borderless look to pickers like Telescope, Snacks Picker & Fzf-Lua
+    borderless_pickers = true,
+    -- Use cache for fastest loads
+    cache = true,
+    extensions = {
+      default = true,
+    },
+  }
 
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'cyberdream'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -441,6 +467,54 @@ do
 
   -- ... and there is more!
   --  Check out: https://github.com/nvim-mini/mini.nvim
+end
+
+do
+-- ============================================================
+-- SECTION 3.1 Snacks
+-- This has a lot of config, so I'll keep it separate
+-- ============================================================
+  vim.pack.add { gh 'folke/snacks.nvim' }
+  local Snacks = require('snacks')
+  Snacks.setup {
+      bigfile = { enabled = true },
+      dashboard = { enabled = true },
+      explorer = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = {
+        enabled = true,
+        timeout = 3000,
+      },
+      picker = { enabled = true },
+      quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+      styles = {
+        notification = {
+          -- wo = { wrap = true } -- Wrap notifications
+        },
+    }
+  }
+
+  vim.keymap.set('n', "<leader>e", function() Snacks.explorer() end, { desc = "File Explorer" })
+  -- git
+  vim.keymap.set('n', "<leader>gb", function() Snacks.picker.git_branches() end, { desc = "Git Branches" })
+  vim.keymap.set('n', "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git Log" })
+  vim.keymap.set('n', "<leader>gL", function() Snacks.picker.git_log_line() end, { desc = "Git Log Line" })
+  vim.keymap.set('n', "<leader>gs", function() Snacks.picker.git_status() end, { desc = "Git Status" })
+  vim.keymap.set('n', "<leader>gS", function() Snacks.picker.git_stash() end, { desc = "Git Stash" })
+  vim.keymap.set('n', "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git Diff (Hunks)" })
+  vim.keymap.set('n', "<leader>gf", function() Snacks.picker.git_log_file() end, { desc = "Git Log File" })
+  -- gh
+  vim.keymap.set('n', "<leader>gi", function() Snacks.picker.gh_issue() end, { desc = "GitHub Issues (open)" })
+
+
+  vim.keymap.set('n', "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, { desc = "GitHub Issues (all)" })
+  vim.keymap.set('n', "<leader>gp", function() Snacks.picker.gh_pr() end, { desc = "GitHub Pull Requests (open)" })
+  vim.keymap.set('n', "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, { desc = "GitHub Pull Requests (all)" })
 end
 
 -- ============================================================
