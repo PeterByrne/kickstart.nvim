@@ -437,6 +437,15 @@ do
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      -- Git commands in the editor
+      require('mini.git').setup()
+
+      -- Commands to toggle comments in source code
+      require('mini.comment').setup()
+
+      -- Neat animations for funzies
+      -- require('mini.animate').setup()
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
