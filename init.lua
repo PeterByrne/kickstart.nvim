@@ -430,20 +430,56 @@ do
   --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
 
-  -- Better Around/Inside textobjects
-  --
-  -- Examples:
-  --  - va)  - [V]isually select [A]round [)]paren
-  --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
-  --  - ci'  - [C]hange [I]nside [']quote
-  require('mini.ai').setup {
-    -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
-    mappings = {
-      around_next = 'aa',
-      inside_next = 'ii',
+      -- Add/delete/replace surroundings (brackets, quotes, etc.)
+      --
+      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - sd'   - [S]urround [D]elete [']quotes
+      -- - sr)'  - [S]urround [R]eplace [)] [']
+      require('mini.surround').setup()
+
+      -- Simple and easy statusline.
+      --  You could remove this setup call if you don't like it,
+      --  and try some other statusline plugin
+      local statusline = require 'mini.statusline'
+      -- set use_icons to true if you have a Nerd Font
+      statusline.setup { use_icons = vim.g.have_nerd_font }
+
+      -- You can configure sections in the statusline by overriding their
+      -- default behavior. For example, here we set the section for
+      -- cursor location to LINE:COLUMN
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_location = function() return '%2l:%-2v' end
+
+      -- ... and there is more!
+      --  Check out: https://github.com/nvim-mini/mini.nvim
+    end,
+  },
+
+  { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    config = function()
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      require('nvim-treesitter').install(filetypes)
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = filetypes,
+        callback = function() vim.treesitter.start() end,
+      })
+    end,
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons", -- optional, but recommended
     },
-    n_lines = 500,
-  }
+    lazy = false, -- neo-tree will lazily load itself
+    config = function()
+      -- Open Neo-tree (filesystem)
+      vim.keymap.set('n', '<leader>nt', ':Neotree toggle<CR>', { silent = true })
+    end,
+  },
 
   -- Add/delete/replace surroundings (brackets, quotes, etc.)
   --
