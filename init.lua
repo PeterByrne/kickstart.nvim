@@ -961,11 +961,44 @@ require('lazy').setup({
           comments = { italic = false }, -- Disable italics in comments
         },
       }
+    end,
+  },
 
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    opts = {},
+    config = function()
+      require('gruvbox').setup {
+        invert_selection = true,
+        contrast = 'hard',
+      }
+    end,
+  },
+  {
+    'scottmckendry/cyberdream.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('cyberdream').setup {
+        -- Override colors
+        colors = {
+          bg = '#361c32',
+          bg_highlight = '#723b69',
+        },
+        -- Disable transparent background
+        transparent = false,
+        -- Enable italics comments
+        italic_comments = true,
+        -- Apply a modern borderless look to pickers like Telescope, Snacks Picker & Fzf-Lua
+        borderless_pickers = true,
+        -- Use cache for fastest loads
+        cache = true,
+        extensions = {
+          default = true,
+        },
+      }
+      vim.cmd 'colorscheme cyberdream'
     end,
   },
 
