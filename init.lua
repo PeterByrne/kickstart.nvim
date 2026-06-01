@@ -115,6 +115,7 @@ do
   -- Enable mouse mode, can be useful for resizing splits for example!
   vim.o.mouse = 'a'
 
+
   -- Don't show the mode, since it's already in the status line
   vim.o.showmode = false
 
@@ -505,19 +506,7 @@ do
   })
 
   vim.keymap.set('n', "<leader>e", function() Snacks.explorer() end, { desc = "File Explorer" })
-  -- git
-  vim.keymap.set('n', "<leader>gb", function() Snacks.picker.git_branches() end, { desc = "Git Branches" })
-  vim.keymap.set('n', "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git Log" })
-  vim.keymap.set('n', "<leader>gL", function() Snacks.picker.git_log_line() end, { desc = "Git Log Line" })
-  vim.keymap.set('n', "<leader>gs", function() Snacks.picker.git_status() end, { desc = "Git Status" })
-  vim.keymap.set('n', "<leader>gS", function() Snacks.picker.git_stash() end, { desc = "Git Stash" })
-  vim.keymap.set('n', "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git Diff (Hunks)" })
-  vim.keymap.set('n', "<leader>gf", function() Snacks.picker.git_log_file() end, { desc = "Git Log File" })
-  -- gh
-  vim.keymap.set('n', "<leader>gi", function() Snacks.picker.gh_issue() end, { desc = "GitHub Issues (open)" })
-  vim.keymap.set('n', "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, { desc = "GitHub Issues (all)" })
-  vim.keymap.set('n', "<leader>gp", function() Snacks.picker.gh_pr() end, { desc = "GitHub Pull Requests (open)" })
-  vim.keymap.set('n', "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, { desc = "GitHub Pull Requests (all)" })
+
 end
 
 -- ============================================================
@@ -1050,5 +1039,32 @@ do
   -- require 'custom.plugins'
 end
 
+do
+  vim.pack.add { gh 'sindrets/diffview.nvim' }
+  -- require('diffview').setup ()
+
+
+  vim.pack.add { gh 'NeogitOrg/neogit' }
+  require('neogit').setup ()
+  vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Open Neogit UI" })
+
+  vim.pack.add { gh 'pwntester/octo.nvim' }
+  require('octo').setup { 
+    -- or "fzf-lua" or "snacks" or "default"
+    picker = "snacks",
+    -- bare Octo command opens picker of commands
+    enable_builtin = true,  
+  }
+  vim.keymap.set('n', "<leader>oi", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues"})
+  vim.keymap.set('n', "<leader>op", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
+  vim.keymap.set('n', "<leader>od", "<CMD>Octo discussion list<CR>", { desc = "List GitHub Discussions" })
+  vim.keymap.set('n', "<leader>on", "<CMD>Octo notification list<CR>", { desc = "List GitHub Notifications" })
+  vim.keymap.set('n', "<leader>os", 
+    function()
+      require("octo.utils").create_base_search_command { include_current_repo = true }
+    end,
+    { desc = "Search GitHub" }
+  )
+end
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
