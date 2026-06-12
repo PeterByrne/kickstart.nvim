@@ -391,7 +391,7 @@ do
       comments = { italic = false }, -- Disable italics in comments
     },
   }
-  
+
   vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
   require('gruvbox').setup {
     invert_selection = true,
@@ -417,12 +417,44 @@ do
       default = true,
     },
   }
+  
+  -- Monochrome themes
+  vim.pack.add { gh 'koron/vim-monochromenote' }
+  vim.pack.add { gh 'jaredgorski/Mies.vim' }
 
-  vim.cmd.colorscheme 'cyberdream'
+  vim.cmd.colorscheme("mies")
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
-  require('todo-comments').setup { signs = false }
+  require('todo-comments').setup {
+    colors = {
+      error = { "#D70000" },
+      warning = { "#D7AF00" },
+      info = { "#5F8787" },
+      hint = { "#5F5F00" },
+      default = { "#8E700B" },
+      test = { "#008700" }
+    },
+    FIX = {
+      icon = " ", -- icon used for the sign, and in search results
+      color = "error", -- can be a hex color, or a named color (see below)
+      alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+      -- signs = false, -- configure signs for some keywords individually
+    },
+    keywords = {
+      TODO = { icon = " ", color = "info" },
+      HACK = { icon = " ", color = "warning" },
+      WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+      PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+      TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+    }
+  }
+--[[
+  -- NOTE: test is a custom keyword we added, so you can add your own keywords and configure them as well!
+  -- TODO: test a todo comment with the keyword TEST to see how it looks!
+  -- WARN: test a warning comment
+--]]
 
   -- [[ mini.nvim ]]
   --  A collection of various small independent plugins/modules
@@ -474,7 +506,7 @@ do
 
   -- Lualine for the status line
   vim.pack.add { gh 'nvim-lualine/lualine.nvim' }
-  require('lualine').setup()
+  require('lualine').setup {}
 end
 
 do
