@@ -516,7 +516,8 @@ do
 
   Snacks.setup({
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    -- dashbord uses lazy.vim, so disable for now
+    dashboard = { enabled = false },
     explorer = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
