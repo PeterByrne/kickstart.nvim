@@ -905,6 +905,31 @@ end
 -- blink.cmp and luasnip setup
 -- ============================================================
 do
+
+  vim.pack.add { gh 'zbirenbaum/copilot.lua' }
+  require("copilot").setup({
+    suggestion = { 
+      enabled = false,
+      auto_trigger = true 
+    },
+    panel = { enabled = false },
+    auth_provider_url = "https://sogeclair.ghe.com",
+    copilot_node_command = "C:/Users/byrnep/scoop/apps/nodejs/current/node.exe"
+  })
+
+
+
+  vim.pack.add { gh "giuxtaposition/blink-cmp-copilot" }
+  -- require("blink-cmp-copilot").setup()
+
+  vim.pack.add { gh 'CopilotC-Nvim/CopilotChat.nvim' }
+  require("CopilotChat").setup({
+    copilot = {
+       enterprise_url = "https://sogeclair.ghe.com",
+    }
+  })
+  vim.keymap.set("n", "<leader>cc", "<cmd>CopilotChat<cr>", { desc = "Open Neogit UI" })
+
   -- [[ Snippet Engine ]]
 
   -- NOTE: You can also specify plugin using a version range for its git tag.
@@ -963,7 +988,15 @@ do
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets' },
+      default = { 'lsp', 'path', 'snippets', "copilot" },
+      providers = {
+        copilot = {
+          name = "copilot",
+          module = "blink-cmp-copilot",
+          score_offset = 100,
+          async = true,
+        },
+      },
     },
 
     snippets = { preset = 'luasnip' },
@@ -1077,7 +1110,7 @@ do
 
 
   vim.pack.add { gh 'NeogitOrg/neogit' }
-  require('neogit').setup ()
+  require('neogit').setup {}
   vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Open Neogit UI" })
 
   vim.pack.add { gh 'pwntester/octo.nvim' }
@@ -1097,6 +1130,10 @@ do
     end,
     { desc = "Search GitHub" }
   )
+
+  -- vim.g.copilot_enterprise_uri = 'https://sogeclair.ghe.com'
+  -- vim.pack.add { gh 'github/copilot.vim' }
+ 
 end
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
